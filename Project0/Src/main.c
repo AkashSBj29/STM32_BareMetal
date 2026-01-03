@@ -12,7 +12,7 @@
 #define GPIO_AEN (1UL << 0)
 #define GPIO_A_MODE_R (*(volatile unsigned int*)(GPIOA_BASE + 0x0UL))
 #define GPIO_A_OD_R (*(volatile unsigned int*)(GPIOA_BASE + 0x14UL))
-#define LED_PIN_0 ~(1U<<6)
+#define LED_PIN_0 (1U<<6)
 
 int main(void) {
   // Enable clock access to GPIO_A
@@ -23,7 +23,8 @@ int main(void) {
   GPIO_A_MODE_R &= ~(1U << 13);
 
   while(1) {
-    // Set PA6 as high
-    GPIO_A_OD_R &= LED_PIN_0;
+    // Toggle PIN 6 on and off
+    GPIO_A_OD_R ^= LED_PIN_0;
+    for(int i = 0; i < 500000; ++i) {}
   }
 }
